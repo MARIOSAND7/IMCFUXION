@@ -1,68 +1,137 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de I.M.C</title>
+
+    <title>Calculadora de IMC</title>
+
     <style>
+
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f5f5f5; }
+
         .container { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+
         input, button { padding: 10px; margin: 10px 0; width: 80%; }
+
         button { background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+
         #resultado { font-weight: bold; margin-top: 20px; font-size: 1.2em; }
+
         .progress { height: 20px; background: #e0e0e0; border-radius: 10px; margin: 15px 0; }
+
         .progress-bar { height: 100%; border-radius: 10px; background: #4CAF50; width: 0%; transition: width 0.5s; }
+
     </style>
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
- <link rel="apple-touch-icon" type="image/png" href="apple-touch-icon.png">
-        <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4CAF50">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    {
+  "name": "IMC Fuxión",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "display": "standalone",
+  "start_url": "."
+}
+   
 </head>
+
 <body>
+
     <div class="container">
+
         <h1>Calculadora de IMC</h1>
+
         <input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
+
         <input type="number" id="altura" placeholder="Altura (m o cm)">
+
         <button onclick="calcularIMC()">Calcular</button>
+
         <div class="progress">
+
             <div class="progress-bar" id="barra"></div>
+
         </div>
+
         <div id="resultado"></div>
+
     </div>
 
+
     <script>
+
         function calcularIMC() {
+
             // Obtener valores
+
             const peso = parseFloat(document.getElementById("peso").value);
+
             let altura = parseFloat(document.getElementById("altura").value);
 
+
             // Validar entrada
+
             if (isNaN(peso) || isNaN(altura)) {
+
                 alert("Ingresa valores válidos.");
+
                 return;
+
             }
 
+
             // Convertir cm a metros si es necesario
+
             if (altura > 3) altura /= 100;
 
+
             // Calcular IMC
+
             const imc = peso / (altura * altura);
+
             const imcRedondeado = Math.round(imc * 100) / 100;
 
+
             // Clasificación
+
             let categoria;
+
             if (imc < 18.5) categoria = "Bajo peso ⚠️";
+
             else if (imc < 25) categoria = "Peso normal ✅";
+
             else if (imc < 30) categoria = "Sobrepeso ⚠️";
+
             else if (imc < 35) categoria = "Obesidad I ❌";
+
             else if (imc < 40) categoria = "Obesidad II ❌";
+
             else categoria = "Obesidad III ❌";
 
+
             // Mostrar resultado
+
             document.getElementById("resultado").innerHTML = 
+
                 `IMC: ${imcRedondeado}<br>${categoria}`;
+
             document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;
+
         }
+
     </script>
+
 </body>
+
 </html>
