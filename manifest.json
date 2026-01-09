@@ -1,15 +1,13 @@
 {
   "name": "IMC Fuxión",
-  "short_name": "IMC",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
   "icons": [
     {
-      "src": "icono.png",
+      "src": "apple-touch-icon.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "display": "standalone",
+  "start_url": "."
 }
