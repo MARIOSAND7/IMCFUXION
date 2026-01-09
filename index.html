@@ -1,81 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+    <title>IMC Fuxión</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="es"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Calculadora de IMC&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f5f5f5; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.container { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>input, button { padding: 10px; margin: 10px 0; width: 80%; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>button { background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#resultado { font-weight: bold; margin-top: 20px; font-size: 1.2em; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.progress { height: 20px; background: #e0e0e0; border-radius: 10px; margin: 15px 0; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.progress-bar { height: 100%; border-radius: 10px; background: #4CAF50; width: 0%; transition: width 0.5s; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="container"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;h1&gt;Calculadora de IMC&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="number" id="peso" placeholder="Peso (kg)" step="0.1"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="number" id="altura" placeholder="Altura (m o cm)"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button onclick="calcularIMC()"&gt;Calcular&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="progress"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="progress-bar" id="barra"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="resultado"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function calcularIMC() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Obtener valores</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const peso = parseFloat(document.getElementById("peso").value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let altura = parseFloat(document.getElementById("altura").value);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Validar entrada</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (isNaN(peso) || isNaN(altura)) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>alert("Ingresa valores válidos.");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Convertir cm a metros si es necesario</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (altura &gt; 3) altura /= 100;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Calcular IMC</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const imc = peso / (altura * altura);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const imcRedondeado = Math.round(imc * 100) / 100;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Clasificación</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>let categoria;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (imc &lt; 18.5) categoria = "Bajo peso ⚠️";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else if (imc &lt; 25) categoria = "Peso normal ✅";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else if (imc &lt; 30) categoria = "Sobrepeso ⚠️";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else if (imc &lt; 35) categoria = "Obesidad I ❌";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else if (imc &lt; 40) categoria = "Obesidad II ❌";</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>else categoria = "Obesidad III ❌";</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Mostrar resultado</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById("resultado").innerHTML =<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>`IMC: ${imcRedondeado}&lt;br&gt;${categoria}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+    <h1>¡Hola Mundo! ✅</h1>
+    <p>Si ves esto, GitHub Pages funciona.</p>
 </body>
 </html>
