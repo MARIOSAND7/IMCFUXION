@@ -223,6 +223,46 @@
                 alert("Error: " + error.message);
             }
         }
+        function descargarPDF() {
+    // Verificar que exista un resultado
+    if (!document.getElementById("resultado").innerText.trim()) {
+        alert("Primero calcula tu IMC.");
+        return;
+    }
+
+    // Inicializar jsPDF
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Contenido del PDF
+    doc.setFontSize(16);
+    doc.text("Resultado IMC Saludable", 20, 20); // Título
+
+    // Información del usuario (ejemplo: puedes personalizarlo)
+    doc.setFontSize(12);
+    doc.text("Autor: MARIO ANDRÉS NARVÁEZ DELGADO", 20, 30);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 38);
+
+    // Resultados (IMC y categoría)
+    const resultadoTexto = document.getElementById("resultado").innerText;
+    doc.text(resultadoTexto, 20, 50);
+
+    // Explicaciones (si están visibles)
+    if (!document.getElementById("explicacion").classList.contains("oculto")) {
+        const explicacion = document.getElementById("texto-explicativo").innerText;
+        const recomendaciones = Array.from(document.querySelectorAll("#lista-recomendaciones li"))
+            .map(li => li.innerText).join("\n- ");
+
+        doc.text("Explicación:", 20, 70);
+        doc.text(explicacion, 20, 80, { maxWidth: 170 });
+
+        doc.text("Recomendaciones:", 20, 110);
+        doc.text("- " + recomendaciones, 20, 120, { maxWidth: 170 });
+    }
+
+    // Guardar el PDF
+    doc.save(`IMC_Saludable_${new Date().toLocaleDateString()}.pdf`);
+}
     </script>
 </body>
 </html>
