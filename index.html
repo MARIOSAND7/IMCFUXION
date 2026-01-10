@@ -95,6 +95,7 @@
         <input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
         <input type="number" id="altura" placeholder="Altura (m o cm)">
         <button onclick="calcularIMC()">Calcular</button>
+        <button onclick="descargarPDF()" id="btnPDF" class="oculto" title="Descargar PDF">📥 PDF</button>
         <div class="progress">
             <div class="progress-bar" id="barra"></div>
         </div>
@@ -220,6 +221,19 @@
             } catch (error) {
                 alert("Error: " + error.message);
             }
+        }
+        
+           // Descargar PDF
+        function descargarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("Resultado IMC Saludable", 20, 20);
+            doc.setFontSize(12);
+            doc.text("Autor: MARIO ANDRÉS NARVÁEZ DELGADO", 20, 30);
+            doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 20, 38);
+            doc.text(document.getElementById("resultado").innerText, 20, 50);
+            doc.save(`IMC_Saludable_${new Date().toLocaleDateString()}.pdf`);
         }
     </script>
 </body>
