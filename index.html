@@ -79,9 +79,77 @@
   .oculto { display: none; }
   #texto-explicativo strong { font-size: 1.1em; }
 </style>
-    
+
     <script>
 
+        const explicaciones = {
+  bajo_peso: {
+    titulo: "Bajo peso ⚠️",
+    texto: "Tu IMC es inferior a 18.5. Puede asociarse a desnutrición, baja masa muscular o problemas digestivos. Consulta a un médico si es persistente.",
+    recomendaciones: [
+      "Aumenta tu ingesta calórica con alimentos nutritivos (frutos secos, aguacates, proteínas magras).",
+      "Haz ejercicio de fuerza (pesas o entrenamiento funcional) para ganar masa muscular.",
+      "Consulta a un nutricionista para evaluar tu situación."
+    ]
+  },
+  normal: {
+    titulo: "Peso normal ✅",
+    texto: "Tu IMC está entre 18.5 y 24.9, lo que indica un peso saludable para tu altura.",
+    recomendaciones: [
+      "Mantén una dieta balanceada y variedad de alimentos.",
+      "Practica actividad física moderada al menos 150 min/semana.",
+      "Realiza chequeos médicos anuales."
+    ]
+  },
+  sobrepeso: {
+    titulo: "Sobrepeso ⚠️",
+    texto: "Tu IMC está entre 25 y 29.9. Puede aumentar el riesgo de diabetes, hipertensión y problemas articulares.",
+    recomendaciones: [
+      "Reduce alimentos ultraprocesados (azúcares añadidos, fritos, refrescos).",
+      "Añade 30 minutos de caminata diaria o ejercicio cardiovascular.",
+      "Consulta a un nutricionista para ajustar tu dieta."
+    ]
+  },
+  obesidad: {
+    titulo: "Obesidad ❌",
+    texto: "Tu IMC es igual o superior a 30. Incrementa significativamente el riesgo de enfermedades crónicas (cardíacas, diabetes tipo 2).",
+    recomendaciones: [
+      "Busca asesoramiento médico para un plan de pérdida de peso segura.",
+      "Prioriza alimentos integrales y reducción de porciones.",
+      "Inicia actividad física baja intensidad (yoga, natación) y aumenta gradualmente."
+    ]
+  }
+};
+
+function mostrarExplicacion(imc) {
+  let clave;
+  if (imc < 18.5) clave = "bajo_peso";
+  else if (imc < 25) clave = "normal";
+  else if (imc < 30) clave = "sobrepeso";
+  else clave = "obesidad";
+
+  const data = explicaciones[clave];
+  document.getElementById("texto-explicativo").innerHTML = `
+    <strong>${data.titulo}</strong><br>${data.texto}
+  `;
+
+  const lista = document.getElementById("lista-recomendaciones");
+  lista.innerHTML = ""; // Limpiar lista anterior
+  data.recomendaciones.forEach(rec => {
+    lista.innerHTML += `<li>${rec}</li>`;
+  });
+
+  document.getElementById("explicacion").classList.remove("oculto");
+}
+
+
+
+
+
+
+
+
+        
         function calcularIMC() {
 
             // Obtener valores
@@ -140,7 +208,9 @@
             document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;
 
         }
-
+// ... (código previo de cálculo de IMC)
+mostrarExplicacion(imc); // Añade esta línea
+        
     </script>
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
