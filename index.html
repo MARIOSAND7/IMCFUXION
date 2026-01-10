@@ -1,223 +1,216 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Calculadora de IMC</title>
-
+    <title>IMC Fuxión</title>
+    <link rel="apple-touch-icon" href="icono.png">
+    <link rel="icon" type="image/png" href="icono.png">
+    <meta name="theme-color" content="#4CAF50">
     <style>
-
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background: #f5f5f5; }
-
-        .container { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-
-        input, button { padding: 10px; margin: 10px 0; width: 80%; }
-
-        button { background: #0000ff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-
-        #resultado { font-weight: bold; margin-top: 20px; font-size: 1.2em; }
-
-        .progress { height: 20px; background: #00ff00; border-radius: 10px; margin: 15px 0; }
-
-        .progress-bar { height: 100%; border-radius: 10px; background: #00ff00; width: 0%; transition: width 0.5s; }
-
+        /* Estilos base */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .progress {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        /* Estilos para explicaciones */
+        #explicacion {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            text-align: left;
+        }
+        #recomendaciones ul {
+            margin: 10px 0 0 20px;
+            color: #444;
+        }
+        .oculto { display: none; }
+        #texto-explicativo strong { font-size: 1.1em; }
+        #texto-explicativo strong {
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        #texto-explicativo strong:contains("✅") { background: #d4edda; color: #155724; }
+        #texto-explicativo strong:contains("⚠️") { background: #fff3cd; color: #856404; }
+        #texto-explicativo strong:contains("❌") { background: #f8d7da; color: #721c24; }
     </style>
-    
 </head>
-
 <body>
-
     <div class="container">
-
-        <h1>Calculadora de IMC FUXION</h1>
-
+        <h1>Calculadora de IMC</h1>
         <input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
-
         <input type="number" id="altura" placeholder="Altura (m o cm)">
-
         <button onclick="calcularIMC()">Calcular</button>
-
         <div class="progress">
-
             <div class="progress-bar" id="barra"></div>
-
         </div>
-
         <div id="resultado"></div>
-
+        
         <!-- NUEVO: Explicaciones y recomendaciones -->
-<div id="explicacion" class="oculto">
-  <h3>¿Qué significa tu IMC?</h3>
-  <p id="texto-explicativo"></p>
-  <div id="recomendaciones">
-    <h4>Recomendaciones:</h4>
-    <ul id="lista-recomendaciones"></ul>
-  </div>
-  <p><small>Consulta 
+        <div id="explicacion" class="oculto">
+            <h3>¿Qué significa tu IMC?</h3>
+            <p id="texto-explicativo"></p>
+            <div id="recomendaciones">
+                <h4>Recomendaciones:</h4>
+                <ul id="lista-recomendaciones"></ul>
+            </div>
+            <p><small>Consulta siempre a un profesional de la salud.</small></p>
+        </div>
     </div>
 
-<!-- Explicaciones y recomendaciones (nuevo) -->
-<div id="explicacion" class="oculto">
-  <h3>¿Qué significa tu IMC?</h3>
-  <p id="texto-explicativo"></p>
-  <div id="recomendaciones">
-    <h4>Recomendaciones:</h4>
-    <ul id="lista-recomendaciones"></ul>
-  </div>
-  <p><small>Consulta siempre a un profesional de la salud para evaluación personalizada.</small></p>
-</div>
-
-<!-- Estilos CSS (añade esto en tu <style>) -->
-<style>
-  #explicacion {
-    margin: 20px 0;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #4CAF50;
-  }
-  #recomendaciones ul {
-    margin: 10px 0 0 20px;
-    color: #444;
-  }
-  .oculto { display: none; }
-  #texto-explicativo strong { font-size: 1.1em; }
-</style>
-
     <script>
-
+        // Diccionario de explicaciones y recomendaciones
         const explicaciones = {
-  bajo_peso: {
-    titulo: "Bajo peso ⚠️",
-    texto: "Tu IMC es inferior a 18.5. Puede asociarse a desnutrición, baja masa muscular o problemas digestivos. Consulta a un médico si es persistente.",
-    recomendaciones: [
-      "Aumenta tu ingesta calórica con alimentos nutritivos (frutos secos, aguacates, proteínas magras).",
-      "Haz ejercicio de fuerza (pesas o entrenamiento funcional) para ganar masa muscular.",
-      "Consulta a un nutricionista para evaluar tu situación."
-    ]
-  },
-  normal: {
-    titulo: "Peso normal ✅",
-    texto: "Tu IMC está entre 18.5 y 24.9, lo que indica un peso saludable para tu altura.",
-    recomendaciones: [
-      "Mantén una dieta balanceada y variedad de alimentos.",
-      "Practica actividad física moderada al menos 150 min/semana.",
-      "Realiza chequeos médicos anuales."
-    ]
-  },
-  sobrepeso: {
-    titulo: "Sobrepeso ⚠️",
-    texto: "Tu IMC está entre 25 y 29.9. Puede aumentar el riesgo de diabetes, hipertensión y problemas articulares.",
-    recomendaciones: [
-      "Reduce alimentos ultraprocesados (azúcares añadidos, fritos, refrescos).",
-      "Añade 30 minutos de caminata diaria o ejercicio cardiovascular.",
-      "Consulta a un nutricionista para ajustar tu dieta."
-    ]
-  },
-  obesidad: {
-    titulo: "Obesidad ❌",
-    texto: "Tu IMC es igual o superior a 30. Incrementa significativamente el riesgo de enfermedades crónicas (cardíacas, diabetes tipo 2).",
-    recomendaciones: [
-      "Busca asesoramiento médico para un plan de pérdida de peso segura.",
-      "Prioriza alimentos integrales y reducción de porciones.",
-      "Inicia actividad física baja intensidad (yoga, natación) y aumenta gradualmente."
-    ]
-  }
-}
-
-function mostrarExplicacion(imc) {
-  let clave;
-  if (imc < 18.5) clave = "bajo_peso";
-  else if (imc < 25) clave = "normal";
-  else if (imc < 30) clave = "sobrepeso";
-  else clave = "obesidad";
-
-  const data = explicaciones[clave];
-  document.getElementById("texto-explicativo").innerHTML = `
-    <strong>${data.titulo}</strong><br>${data.texto}
-  `;
-
-  const lista = document.getElementById("lista-recomendaciones");
-  lista.innerHTML = ""; // Limpiar lista anterior
-  data.recomendaciones.forEach(rec => {
-    lista.innerHTML += `<li>${rec}</li>`;
-  });
-
-  document.getElementById("explicacion").classList.remove("oculto");
-}
-        
-        function calcularIMC() {
-
-            // Obtener valores
-
-            const peso = parseFloat(document.getElementById("peso").value);
-
-            let altura = parseFloat(document.getElementById("altura").value);
-
-
-            // Validar entrada
-
-            if (isNaN(peso) || isNaN(altura)) {
-
-                alert("Ingresa valores válidos.");
-
-                return;
-
+            bajo_peso: {
+                titulo: "Bajo peso ⚠️",
+                texto: "Tu IMC es inferior a 18.5. Puede asociarse a desnutrición, baja masa muscular o problemas digestivos.",
+                recomendaciones: [
+                    "Aumenta tu ingesta calórica con alimentos nutritivos (frutos secos, aguacates, proteínas magras).",
+                    "Haz ejercicio de fuerza (pesas o entrenamiento funcional) para ganar masa muscular.",
+                    "Consulta a un nutricionista para evaluar tu situación."
+                ]
+            },
+            normal: {
+                titulo: "Peso normal ✅",
+                texto: "Tu IMC está entre 18.5 y 24.9, lo que indica un peso saludable para tu altura.",
+                recomendaciones: [
+                    "Mantén una dieta balanceada y variedad de alimentos.",
+                    "Practica actividad física moderada al menos 150 min/semana.",
+                    "Realiza chequeos médicos anuales."
+                ]
+            },
+            sobrepeso: {
+                titulo: "Sobrepeso ⚠️",
+                texto: "Tu IMC está entre 25 y 29.9. Puede aumentar el riesgo de diabetes, hipertensión y problemas articulares.",
+                recomendaciones: [
+                    "Reduce alimentos ultraprocesados (azúcares añadidos, fritos, refrescos).",
+                    "Añade 30 minutos de caminata diaria o ejercicio cardiovascular.",
+                    "Consulta a un nutricionista para ajustar tu dieta."
+                ]
+            },
+            obesidad: {
+                titulo: "Obesidad ❌",
+                texto: "Tu IMC es igual o superior a 30. Incrementa significativamente el riesgo de enfermedades crónicas (cardíacas, diabetes tipo 2).",
+                recomendaciones: [
+                    "Busca asesoramiento médico para un plan de pérdida de peso segura.",
+                    "Prioriza alimentos integrales y reducción de porciones.",
+                    "Inicia actividad física baja intensidad (yoga, natación) y aumenta gradualmente."
+                ]
             }
+        };
 
-            // Convertir cm a metros si es necesario
+        // Función para mostrar explicaciones
+        function mostrarExplicacion(imc) {
+            let clave;
+            if (imc < 18.5) clave = "bajo_peso";
+            else if (imc < 25) clave = "normal";
+            else if (imc < 30) clave = "sobrepeso";
+            else clave = "obesidad";
 
-            if (altura > 3) altura /= 100;
+            const data = explicaciones[clave];
+            document.getElementById("texto-explicativo").innerHTML = `
+                <strong>${data.titulo}</strong><br>${data.texto}
+            `;
 
+            const lista = document.getElementById("lista-recomendaciones");
+            lista.innerHTML = "";
+            data.recomendaciones.forEach(rec => {
+                lista.innerHTML += `<li>${rec}</li>`;
+            });
 
-            // Calcular IMC
-
-            const imc = peso / (altura * altura);
-
-            const imcRedondeado = Math.round(imc * 100) / 100;
-
-
-            // Clasificación
-
-            let categoria;
-
-            if (imc < 18.5) categoria = "Bajo peso ⚠️";
-
-            else if (imc < 25) categoria = "Peso normal ✅";
-
-            else if (imc < 30) categoria = "Sobrepeso ⚠️";
-
-            else if (imc < 35) categoria = "Obesidad I ❌";
-
-            else if (imc < 40) categoria = "Obesidad II ❌";
-
-            else categoria = "Obesidad III ❌";
-
-
-            // Mostrar resultado
-
-            document.getElementById("resultado").innerHTML = 
-
-                `IMC: ${imcRedondeado}<br>${categoria}`;
-
-            document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;
-
+            document.getElementById("explicacion").classList.remove("oculto");
         }
-// ... (código previo de cálculo de IMC)
 
-        mostrarExplicacion(imc); // Añade esta línea
-        
+        // Función principal de cálculo
+        function calcularIMC() {
+            try {
+                // Obtener valores
+                const peso = parseFloat(document.getElementById("peso").value);
+                let altura = parseFloat(document.getElementById("altura").value);
+
+                // Validar entrada
+                if (isNaN(peso) || isNaN(altura)) {
+                    alert("Ingresa valores válidos.");
+                    return;
+                }
+
+                // Convertir cm a metros si es necesario
+                if (altura > 3) altura /= 100;
+
+                if (peso <= 0 || altura <= 0) {
+                    alert("El peso y la altura deben ser mayores que cero.");
+                    return;
+                }
+
+                // Calcular IMC
+                const imc = peso / (altura ** 2);
+                const imc_redondeado = Math.round(imc * 100) / 100;
+
+                // Clasificación
+                let categoria;
+                if (imc < 18.5) categoria = "Bajo peso ⚠️";
+                else if (imc < 25) categoria = "Peso normal ✅";
+                else if (imc < 30) categoria = "Sobrepeso ⚠️";
+                else if (imc < 35) categoria = "Obesidad I ❌";
+                else if (imc < 40) categoria = "Obesidad II ❌";
+                else categoria = "Obesidad III (mórbida) ❌";
+
+                // Mostrar resultados
+                document.getElementById("resultado").innerHTML = `
+                    <h2>IMC: ${imc_redondeado}</h2>
+                    <p>${categoria}</p>
+                `;
+                document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;
+
+                // Mostrar explicaciones (NUEVO)
+                mostrarExplicacion(imc);
+
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        }
     </script>
-
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-  <link rel="manifest" href="manifest.json">
-    
 </body>
-
 </html>
