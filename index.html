@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMC Fuxión</title>
+    <title>IMC Saludable</title>
     <link rel="apple-touch-icon" href="icono.png">
     <link rel="icon" type="image/png" href="icono.png">
     <meta name="theme-color" content="#4CAF50">
+    <meta name="author" content="MARIO ANDRÉS NARVÁEZ DELGADO">
+    <meta name="description" content="Calculadora de IMC desarrollada por MARIO ANDRÉS NARVÁEZ DELGADO. Incluye explicaciones y recomendaciones personalizadas.">
     <style>
         /* Estilos base */
         body {
@@ -75,11 +77,21 @@
         #texto-explicativo strong:contains("✅") { background: #d4edda; color: #155724; }
         #texto-explicativo strong:contains("⚠️") { background: #fff3cd; color: #856404; }
         #texto-explicativo strong:contains("❌") { background: #f8d7da; color: #721c24; }
+        /* Footer */
+        footer {
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Calculadora de IMC</h1>
+        <!-- Título con tu nombre -->
+        <h1>IMC Saludable<br>
+            <small style="font-size: 0.6em; color: #666;">por MARIO ANDRÉS NARVÁEZ DELGADO</small>
+        </h1>
+        
         <input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
         <input type="number" id="altura" placeholder="Altura (m o cm)">
         <button onclick="calcularIMC()">Calcular</button>
@@ -88,7 +100,7 @@
         </div>
         <div id="resultado"></div>
         
-        <!-- NUEVO: Explicaciones y recomendaciones -->
+        <!-- Explicaciones y recomendaciones -->
         <div id="explicacion" class="oculto">
             <h3>¿Qué significa tu IMC?</h3>
             <p id="texto-explicativo"></p>
@@ -99,6 +111,11 @@
             <p><small>Consulta siempre a un profesional de la salud.</small></p>
         </div>
     </div>
+
+    <!-- Footer con tu nombre -->
+    <footer>
+        Desarrollado por <strong>MARIO ANDRÉS NARVÁEZ DELGADO</strong> • 2024
+    </footer>
 
     <script>
         // Diccionario de explicaciones y recomendaciones
@@ -166,29 +183,24 @@
         // Función principal de cálculo
         function calcularIMC() {
             try {
-                // Obtener valores
                 const peso = parseFloat(document.getElementById("peso").value);
                 let altura = parseFloat(document.getElementById("altura").value);
 
-                // Validar entrada
                 if (isNaN(peso) || isNaN(altura)) {
                     alert("Ingresa valores válidos.");
                     return;
                 }
 
-                // Convertir cm a metros si es necesario
-                if (altura > 3) altura /= 100;
+                if (altura > 3) altura /= 100; // Convertir cm a metros
 
                 if (peso <= 0 || altura <= 0) {
                     alert("El peso y la altura deben ser mayores que cero.");
                     return;
                 }
 
-                // Calcular IMC
                 const imc = peso / (altura ** 2);
                 const imc_redondeado = Math.round(imc * 100) / 100;
 
-                // Clasificación
                 let categoria;
                 if (imc < 18.5) categoria = "Bajo peso ⚠️";
                 else if (imc < 25) categoria = "Peso normal ✅";
@@ -197,14 +209,12 @@
                 else if (imc < 40) categoria = "Obesidad II ❌";
                 else categoria = "Obesidad III (mórbida) ❌";
 
-                // Mostrar resultados
                 document.getElementById("resultado").innerHTML = `
                     <h2>IMC: ${imc_redondeado}</h2>
                     <p>${categoria}</p>
                 `;
                 document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;
 
-                // Mostrar explicaciones (NUEVO)
                 mostrarExplicacion(imc);
 
             } catch (error) {
