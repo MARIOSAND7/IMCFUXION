@@ -1,2 +1,2 @@
-# IMCFUXION
+# IMC
 Calcula tu IMC
