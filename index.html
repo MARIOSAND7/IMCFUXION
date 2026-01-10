@@ -52,7 +52,34 @@
 
     </div>
 
+<!-- Explicaciones y recomendaciones (nuevo) -->
+<div id="explicacion" class="oculto">
+  <h3>¿Qué significa tu IMC?</h3>
+  <p id="texto-explicativo"></p>
+  <div id="recomendaciones">
+    <h4>Recomendaciones:</h4>
+    <ul id="lista-recomendaciones"></ul>
+  </div>
+  <p><small>Consulta siempre a un profesional de la salud para evaluación personalizada.</small></p>
+</div>
 
+<!-- Estilos CSS (añade esto en tu <style>) -->
+<style>
+  #explicacion {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+  }
+  #recomendaciones ul {
+    margin: 10px 0 0 20px;
+    color: #444;
+  }
+  .oculto { display: none; }
+  #texto-explicativo strong { font-size: 1.1em; }
+</style>
+    
     <script>
 
         function calcularIMC() {
