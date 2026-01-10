@@ -8,21 +8,14 @@
     <link rel="icon" type="image/png" href="icono.png">
     <meta name="theme-color" content="#4CAF50">
     <meta name="author" content="MARIO ANDRÉS NARVÁEZ DELGADO">
-    <meta name="description" content="Calculadora de IMC con recomendaciones personalizadas. Desarrollada por MARIO ANDRÉS NARVÁEZ DELGADO.">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
+    <meta name="description" content="Calculadora de IMC desarrollada por MARIO ANDRÉS NARVÁEZ DELGADO. Incluye explicaciones y recomendaciones personalizadas.">
     <style>
-        /* DISEÑO ORIGINAL (¡con tus colores y fuentes!) */
+        /* Estilos base */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
             background: #f5f5f5;
-            transition: all 0.3s;
-        }
-        body.dark-mode {
-            background: #1a1a1a;
-            color: white;
         }
         .container {
             max-width: 400px;
@@ -31,36 +24,23 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            transition: all 0.3s;
         }
-        body.dark-mode .container {
-            background: #2d2d2d;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        input, button, select {
+        input, button {
             padding: 10px;
             margin: 10px 0;
             width: 80%;
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-        body.dark-mode input, body.dark-mode select {
-            background: #333;
-            color: white;
-        }
         button {
             background: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
-            transition: all 0.3s;
         }
         button:hover {
             background: #45a049;
         }
-        #btnPDF { background: #FF5722; }
-        #btnHistorial { background: #2196F3; }
-        #btnDarkMode { background: #333; }
         .progress {
             height: 20px;
             background: #e0e0e0;
@@ -74,7 +54,7 @@
             width: 0%;
             transition: width 0.5s;
         }
-        /* COLORES POR CATEGORÍA (¡igual que antes!) */
+        /* Estilos para explicaciones */
         #explicacion {
             margin: 20px 0;
             padding: 15px;
@@ -82,14 +62,14 @@
             border-radius: 8px;
             border-left: 4px solid #4CAF50;
             text-align: left;
-            transition: all 0.3s;
         }
-        body.dark-mode #explicacion {
-            background: #333;
+        #recomendaciones ul {
+            margin: 10px 0 0 20px;
+            color: #444;
         }
         .oculto { display: none; }
+        #texto-explicativo strong { font-size: 1.1em; }
         #texto-explicativo strong {
-            font-size: 1.1em;
             padding: 4px 8px;
             border-radius: 4px;
             display: inline-block;
@@ -97,46 +77,30 @@
         #texto-explicativo strong:contains("✅") { background: #d4edda; color: #155724; }
         #texto-explicativo strong:contains("⚠️") { background: #fff3cd; color: #856404; }
         #texto-explicativo strong:contains("❌") { background: #f8d7da; color: #721c24; }
-        #recomendaciones ul {
-            margin: 10px 0 0 20px;
-            color: #444;
-        }
+        /* Footer */
         footer {
             margin-top: 30px;
             color: #666;
             font-size: 0.9em;
         }
-        body.dark-mode footer {
-            color: #aaa;
-        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Título con tu nombre -->
         <h1>IMC Saludable<br>
             <small style="font-size: 0.6em; color: #666;">por MARIO ANDRÉS NARVÁEZ DELGADO</small>
         </h1>
         
-        <!-- (Tus inputs y botones originales) -->
         <input type="number" id="peso" placeholder="Peso (kg)" step="0.1">
         <input type="number" id="altura" placeholder="Altura (m o cm)">
-        <select id="actividad" style="width: 80%;">
-            <option value="1.2">Actividad: Sedentario</option>
-            <option value="1.5" selected>Actividad: Moderado</option>
-            <option value="1.8">Actividad: Activo</option>
-        </select>
         <button onclick="calcularIMC()">Calcular</button>
-        <button onclick="toggleDarkMode()" id="btnDarkMode" title="Modo oscuro">🌓</button>
-        <button onclick="descargarPDF()" id="btnPDF" class="oculto" title="Descargar PDF">📥 PDF</button>
-        <button onclick="verHistorial()" id="btnHistorial" class="oculto" title="Ver historial">📊 Historial</button>
-        
-        <!-- (Progress bar y resultado) -->
         <div class="progress">
             <div class="progress-bar" id="barra"></div>
         </div>
         <div id="resultado"></div>
         
-        <!-- EXPLICACIONES Y RECOMENDACIONES (¡con tu diseño original!) -->
+        <!-- Explicaciones y recomendaciones -->
         <div id="explicacion" class="oculto">
             <h3>¿Qué significa tu IMC?</h3>
             <p id="texto-explicativo"></p>
@@ -146,40 +110,117 @@
             </div>
             <p><small>Consulta siempre a un profesional de la salud.</small></p>
         </div>
-        
-        <!-- (Historial y gráfico) -->
-        <div id="historial" class="oculto">
-            <h3>Historial de cálculos</h3>
-            <ul id="lista-historial"></ul>
-            <canvas id="graficoIMC" class="oculto"></canvas>
-        </div>
     </div>
-    <footer>Desarrollado por <strong>MARIO ANDRÉS NARVÁEZ DELGADO</strong> • 2024</footer>
+
+    <!-- Footer con tu nombre -->
+    <footer>
+        Desarrollado por <strong>MARIO ANDRÉS NARVÁEZ DELGADO</strong> • 2024
+    </footer>
 
     <script>
-        // (Tu diccionario de explicaciones original)
-        const explicaciones = { /* ... (igual que antes) ... */ };
+        // Diccionario de explicaciones y recomendaciones
+        const explicaciones = {
+            bajo_peso: {
+                titulo: "Bajo peso ⚠️",
+                texto: "Tu IMC es inferior a 18.5. Puede asociarse a desnutrición, baja masa muscular o problemas digestivos.",
+                recomendaciones: [
+                    "Aumenta tu ingesta calórica con alimentos nutritivos (frutos secos, aguacates, proteínas magras).",
+                    "Haz ejercicio de fuerza (pesas o entrenamiento funcional) para ganar masa muscular.",
+                    "Consulta a un nutricionista para evaluar tu situación."
+                ]
+            },
+            normal: {
+                titulo: "Peso normal ✅",
+                texto: "Tu IMC está entre 18.5 y 24.9, lo que indica un peso saludable para tu altura.",
+                recomendaciones: [
+                    "Mantén una dieta balanceada y variedad de alimentos.",
+                    "Practica actividad física moderada al menos 150 min/semana.",
+                    "Realiza chequeos médicos anuales."
+                ]
+            },
+            sobrepeso: {
+                titulo: "Sobrepeso ⚠️",
+                texto: "Tu IMC está entre 25 y 29.9. Puede aumentar el riesgo de diabetes, hipertensión y problemas articulares.",
+                recomendaciones: [
+                    "Reduce alimentos ultraprocesados (azúcares añadidos, fritos, refrescos).",
+                    "Añade 30 minutos de caminata diaria o ejercicio cardiovascular.",
+                    "Consulta a un nutricionista para ajustar tu dieta."
+                ]
+            },
+            obesidad: {
+                titulo: "Obesidad ❌",
+                texto: "Tu IMC es igual o superior a 30. Incrementa significativamente el riesgo de enfermedades crónicas (cardíacas, diabetes tipo 2).",
+                recomendaciones: [
+                    "Busca asesoramiento médico para un plan de pérdida de peso segura.",
+                    "Prioriza alimentos integrales y reducción de porciones.",
+                    "Inicia actividad física baja intensidad (yoga, natación) y aumenta gradualmente."
+                ]
+            }
+        };
 
-        // (Tu función mostrarExplicacion original)
-        function mostrarExplicacion(imc) { /* ... (igual que antes) ... */ }
+        // Función para mostrar explicaciones
+        function mostrarExplicacion(imc) {
+            let clave;
+            if (imc < 18.5) clave = "bajo_peso";
+            else if (imc < 25) clave = "normal";
+            else if (imc < 30) clave = "sobrepeso";
+            else clave = "obesidad";
 
-        // (Tu función calcularIMC con diseño original)
-        function calcularIMC() {
-            // ... (tu lógica de cálculo original) ...
-            // ... (llamar a mostrarExplicacion(imc) al final) ...
+            const data = explicaciones[clave];
+            document.getElementById("texto-explicativo").innerHTML = `
+                <strong>${data.titulo}</strong><br>${data.texto}
+            `;
+
+            const lista = document.getElementById("lista-recomendaciones");
+            lista.innerHTML = "";
+            data.recomendaciones.forEach(rec => {
+                lista.innerHTML += `<li>${rec}</li>`;
+            });
+
+            document.getElementById("explicacion").classList.remove("oculto");
         }
 
-        // (Resto de funciones nuevas: PDF, historial, modo oscuro)
-        function guardarEnHistorial() { /* ... */ }
-        function verHistorial() { /* ... */ }
-        function descargarPDF() { /* ... */ }
-        function toggleDarkMode() { /* ... */ }
+        // Función principal de cálculo
+        function calcularIMC() {
+            try {
+                const peso = parseFloat(document.getElementById("peso").value);
+                let altura = parseFloat(document.getElementById("altura").value);
 
-        // (Inicialización)
-        if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark-mode');
-        const chartScript = document.createElement('script');
-        chartScript.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-        document.head.appendChild(chartScript);
+                if (isNaN(peso) || isNaN(altura)) {
+                    alert("Ingresa valores válidos.");
+                    return;
+                }
+
+                if (altura > 3) altura /= 100; // Convertir cm a metros
+
+                if (peso <= 0 || altura <= 0) {
+                    alert("El peso y la altura deben ser mayores que cero.");
+                    return;
+                }
+
+                const imc = peso / (altura ** 2);
+                const imc_redondeado = Math.round(imc * 100) / 100;
+
+                let categoria;
+                if (imc < 18.5) categoria = "Bajo peso ⚠️";
+                else if (imc < 25) categoria = "Peso normal ✅";
+                else if (imc < 30) categoria = "Sobrepeso ⚠️";
+                else if (imc < 35) categoria = "Obesidad I ❌";
+                else if (imc < 40) categoria = "Obesidad II ❌";
+                else categoria = "Obesidad III (mórbida) ❌";
+
+                document.getElementById("resultado").innerHTML = `
+                    <h2>IMC: ${imc_redondeado}</h2>
+                    <p>${categoria}</p>
+                `;
+                document.getElementById("barra").style.width = `${Math.min(imc, 40)}%`;
+
+                mostrarExplicacion(imc);
+
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        }
     </script>
 </body>
 </html>
